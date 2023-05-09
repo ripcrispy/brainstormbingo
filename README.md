@@ -10,3 +10,7 @@ This project generates two bingo sheets for Magic The Gathering Commander, using
 ## Customizing the Sheet
 
 If you want to customize the tasks included on the sheet, you can modify the `challenges` array in the `script.js` file. Each challenge is marked with a title and difficulty, 1 being easy and 4 being hardest. Harder challenges are weighted towards the center of the bingo sheet, while easier tasks are weighted towards the outter cells of the bingo sheet.
+
+## Credits
+
+Please be advised that all images/artwork in the `img` folder are owned by Wizards Of The Coast. 
