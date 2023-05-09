@@ -1,0 +1,27 @@
+@media print{
+    .container {
+        display:none;
+    }
+    
+    .buttons {
+        display:none;
+    }
+
+    table {
+        border: 1px solid black;
+        border-collapse: collapse;
+        margin: 5px;
+    }
+
+    tr td {
+        font-family:'Yusei Magic', sans-serif;
+        font-size: 11px;
+        color: black;
+        border: 1px solid black;
+        border-collapse: collapse;
+        width: 80px;
+        height: 80px;
+        padding: 5px;
+        text-align: center;
+    }
+}

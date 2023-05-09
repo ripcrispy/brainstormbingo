@@ -1,0 +1,99 @@
+html {
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh;
+  overflow: hidden;
+  font-family: 'Yusei Magic', sans-serif;
+  color: white;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.header {
+  font-size: 64px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.subheader {
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.paragraph {
+  font-size: 14px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.tables {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+table {
+  margin: 10px;
+  border: 1px solid white;
+  border-collapse: collapse;
+}
+
+tr td {
+  font-family:'Yusei Magic', sans-serif;
+  font-size: 14px;
+  color: white;
+  border: 1px solid white;
+  border-collapse: collapse;
+  width: 120px;
+  height: 120px;
+  padding: 5px;
+  text-align: center;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.button {
+  font-family: 'Yusei Magic', sans-serif;
+  margin: 10px;
+  width: 150px;
+  border-radius: 5px;
+  background-color: #2b2b2b;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.button:hover {
+  font-family: 'Yusei Magic', sans-serif;
+  margin: 10px;
+  width: 150px;
+  border-radius: 5px;
+  background-color: #9b9b9b;
+  color: black;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+@media print {
+  .container {
+    display:none;
+  }
+  .buttons {
+    display:none;
+  }
+}
