@@ -1,33 +1,204 @@
 <!DOCTYPE html>
-<html lang="en" >
-<head>
-  <meta charset="UTF-8">
-  <title>Brainstorm Bingo</title>
-  <link rel="stylesheet" media="screen" href="./style.css">
-  <link rel="stylesheet" media="print" href="./print.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Yusei+Magic&display=swap" rel="stylesheet">
-</head>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Brainstorm Bingo — Commander Challenges</title>
+    <meta name="description" content="Generate, customise, mark and print Commander bingo cards. Runs entirely in your browser." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Yusei+Magic&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/tailwind.css" />
+  </head>
+  <body class="min-h-screen bg-neutral-950 font-magic text-white antialiased">
+    <main class="mx-auto flex min-h-screen w-full max-w-3xl flex-col items-center px-4 py-6 sm:py-10 print:px-0 print:py-0">
+      <header class="text-center print:hidden">
+        <h1 class="text-4xl font-bold tracking-wide sm:text-5xl md:text-6xl">Brainstorm Bingo</h1>
+        <h2 class="mt-2 text-xl font-bold text-white/90 sm:text-2xl md:text-3xl">Commander Challenges</h2>
+      </header>
 
-<body>
-  <div class="container">
-    <div>
-      <h1 class="header">Brainstorm Bingo</h1>
-      <h2 class="subheader">Commander Challenges</h2>
-      <p class="paragraph">To participate in our in-store event, simply complete the conditions listed on your bingo card and mark them off as you go. We hope you have fun playing and wish you the best of luck in completing your bingo card!</p>
+      <div class="bb-print-header hidden text-center print:block">
+        <h1 class="text-2xl font-bold">Brainstorm Bingo — Commander Challenges</h1>
+        <p class="mt-1 text-sm">Generated <span id="print-date"></span></p>
+      </div>
+
+      <nav
+        class="mt-6 flex w-full flex-wrap items-center justify-center gap-1.5 sm:flex-nowrap sm:gap-2 xl:gap-3 print:hidden"
+        aria-label="Board controls"
+      >
+        <button
+          id="btn-new-board"
+          type="button"
+          class="rounded-md bg-white px-2.5 py-1.5 text-xs font-bold text-neutral-900 shadow-sm transition-colors hover:bg-amber-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 sm:px-4 sm:py-2 sm:text-base"
+        >
+          New Board
+        </button>
+
+        <label
+          class="flex items-center gap-1.5 rounded-md border border-white/30 bg-white/10 px-2 py-1 sm:px-3"
+          title="Board size"
+        >
+          <span class="sr-only">Board size</span>
+          <select
+            id="select-size"
+            class="rounded border-0 bg-neutral-900 px-1 py-0.5 text-xs font-semibold text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 sm:text-base"
+            aria-label="Board size"
+          ></select>
+        </label>
+
+        <button
+          id="btn-print"
+          type="button"
+          class="rounded-md border border-white/30 bg-white/10 px-2.5 py-1.5 text-xs font-semibold transition-colors hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 sm:px-4 sm:py-2 sm:text-base"
+        >
+          Print
+        </button>
+
+        <button
+          id="btn-items"
+          type="button"
+          class="rounded-md border border-white/30 bg-white/10 px-2.5 py-1.5 text-xs font-semibold transition-colors hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 sm:px-4 sm:py-2 sm:text-base"
+        >
+          <span class="sm:hidden">Items</span>
+          <span class="hidden sm:inline">Manage Items</span>
+        </button>
+
+        <button
+          id="btn-background"
+          type="button"
+          title="Pick a different background image"
+          aria-label="Shuffle background"
+          class="rounded-md border border-white/30 bg-white/10 px-2.5 py-1.5 text-xs font-semibold transition-colors hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 sm:px-4 sm:py-2 sm:text-base"
+        >
+          <span class="hidden sm:inline">Background</span>
+          <svg
+            class="sm:hidden h-4 w-4"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <polyline points="23 4 23 10 17 10"></polyline>
+            <polyline points="1 20 1 14 7 14"></polyline>
+            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+          </svg>
+        </button>
+      </nav>
+
+      <div id="message" class="mt-4 hidden w-full max-w-xl print:hidden" role="status" aria-live="polite"></div>
+
+      <section class="mt-4 w-full max-w-[600px] print:max-w-none" aria-label="Bingo board">
+        <div id="board" class="bb-board grid w-full select-none border-l border-t border-white/80" style="--bb-n: 5"></div>
+      </section>
+
+      <footer class="mt-6 pb-2 text-center text-xs leading-relaxed text-white/50 print:hidden">
+        <p>
+          Card artwork © Wizards of the Coast. Your items, board and marks are stored locally in your browser — nothing
+          is uploaded anywhere.
+        </p>
+      </footer>
+
+      <noscript>
+        <div class="mt-6 w-full max-w-xl rounded-md border border-red-400/60 bg-red-950/80 px-4 py-3 text-center text-sm text-red-100">
+          Brainstorm Bingo needs JavaScript to generate the board. Please enable JavaScript and reload the page.
+        </div>
+      </noscript>
+    </main>
+
+    <div
+      id="modal"
+      class="fixed inset-0 z-50 hidden flex items-stretch justify-center sm:items-center"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modal-title"
+      aria-hidden="true"
+    >
+      <div class="absolute inset-0 bg-black/70" data-modal-close></div>
+      <div
+        class="relative flex h-full w-full flex-col bg-neutral-900 shadow-2xl sm:h-auto sm:max-h-[85vh] sm:max-w-lg sm:rounded-xl sm:border sm:border-white/15"
+      >
+        <header class="flex items-center justify-between gap-3 border-b border-white/10 px-4 py-3">
+          <h2 id="modal-title" class="text-lg font-bold">Manage bingo items</h2>
+          <button
+            id="btn-modal-close"
+            type="button"
+            aria-label="Close dialog"
+            class="flex h-9 w-9 items-center justify-center rounded-md border border-white/25 text-lg leading-none hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400"
+          >
+            ×
+          </button>
+        </header>
+
+        <div class="flex-1 overflow-y-auto px-4 py-4">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <label class="flex items-center gap-2 text-sm font-semibold">
+              <input
+                id="chk-free-space"
+                type="checkbox"
+                class="h-4 w-4 rounded border-white/30 accent-amber-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400"
+              />
+              <span>Free space</span>
+            </label>
+            <span id="items-count" class="text-xs text-white/60"></span>
+          </div>
+          <p class="mt-1 text-xs text-white/50">
+            Free space: exact centre cell on odd sizes; top-left of the central four cells on even sizes.
+          </p>
+
+          <ul id="items-list" class="mt-3 divide-y divide-white/10"></ul>
+
+          <div id="item-message" class="hidden" role="status" aria-live="polite"></div>
+
+          <form id="form-add-item" class="mt-4 flex flex-col gap-2 sm:flex-row sm:items-start">
+            <div class="min-w-0 flex-1">
+              <label for="new-item" class="sr-only">New bingo item</label>
+              <input
+                id="new-item"
+                type="text"
+                maxlength="80"
+                placeholder="e.g. Cast 7 spells in one turn"
+                class="h-9 w-full rounded-md border border-white/25 bg-white/5 px-3 text-sm text-white placeholder-white/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400"
+              />
+            </div>
+            <div class="shrink-0">
+              <label for="new-item-difficulty" class="sr-only">New item difficulty</label>
+              <select
+                id="new-item-difficulty"
+                class="h-9 rounded-md border border-white/25 bg-neutral-900 px-2 text-sm text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400"
+              >
+                <option value="1">Easy</option>
+                <option value="2" selected>Medium</option>
+                <option value="3">Hard</option>
+                <option value="4">Hardest</option>
+              </select>
+            </div>
+            <button
+              type="submit"
+              class="h-9 shrink-0 rounded-md bg-amber-400 px-4 text-sm font-bold text-neutral-900 transition-colors hover:bg-amber-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+            >
+              Add Item
+            </button>
+          </form>
+        </div>
+
+        <footer class="border-t border-white/10 px-4 py-3">
+          <button
+            id="btn-reset"
+            type="button"
+            class="rounded-md border border-red-400/50 px-4 py-2 text-sm font-semibold text-red-300 transition-colors hover:bg-red-400/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400"
+          >
+            Reset to defaults
+          </button>
+        </footer>
+      </div>
     </div>
-    
-    <script src="./script.js"></script> 
 
-    <div class="buttons">
-      <button class="button" onclick="location.href='/index.html';">Generate</button>
-      <button class="button" onclick="window.print();">Print</button>
-    </div>
-  </div>
-
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js'></script>
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/parallax/2.1.3/jquery.parallax.min.js'></script>
-</body>
-
+    <script src="js/storage.js"></script>
+    <script src="js/bingo.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/app.js"></script>
+  </body>
 </html>

@@ -1,0 +1,59 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+    color-scheme: dark;
+  }
+}
+
+/* Cell text scales with the actual board size (JS sets --bb-n). */
+.bb-cell {
+  font-size: clamp(9px, calc(min(100vw - 2rem, 600px) / var(--bb-n, 5) * 0.16), 15px);
+}
+
+/* ------------------------------------------------------------------ */
+/* Purpose-built print layout (see also the print: utilities in HTML) */
+/* ------------------------------------------------------------------ */
+@media print {
+  @page {
+    margin: 10mm;
+  }
+
+  html,
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+
+  .bb-board {
+    width: min(100%, 170mm) !important;
+    max-width: none !important;
+    margin: 8mm auto 0 !important;
+    border-color: #000 !important;
+  }
+
+  .bb-cell {
+    border-color: #000 !important;
+    color: #000 !important;
+    background: #fff !important;
+    font-size: min(11px, calc(min(170mm, 100%) / var(--bb-n, 5) * 0.115));
+  }
+
+  .bb-check {
+    color: #000 !important;
+    background: none !important;
+  }
+
+  .bb-free {
+    background: #fff !important;
+    color: #000 !important;
+  }
+
+  .bb-print-header {
+    color: #000 !important;
+    margin-bottom: 4mm;
+  }
+}
